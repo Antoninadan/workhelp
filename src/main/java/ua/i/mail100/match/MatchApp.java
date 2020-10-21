@@ -20,7 +20,9 @@ public class MatchApp {
                 "\\.\\.",  // ..
 //                "update(\\s)(\\w)\\s"
 //                "(?i)[^\\s]update\\s+(w+(?!8))"
-                "(?i)(update|insert|join|from|exec)[\\s]+(((?!\\.).)*$)"
+                "(?i)(update|insert|insert into|join|from|exec)[\\s]+(((?!\\.).)*$)"
+//                "(?i)(update|insert|insert into|join|from|exec)[\\s]+^((?!#|@)((?!\\.).)*$)"  // ^(?!#|@)(((?!\.).)*$)
+//                "^((?!#|@)((?!\\.).)*$)"  // ^(?!#|@)(((?!\.).)*$)
 //                "(?i)update([\\s]+)[^8]"
 //                "[^8]"
 //                        "q{1,}(?!werty)"
@@ -29,7 +31,12 @@ public class MatchApp {
         );
 
         List<String> tests = Arrays.asList(
+                "@dfg  ",
+                "d@fg  ",
+                "d.fg  ",
                 "c xbv bn    UPdate     bad.    ",
+                "c xbv bn    UPdate     @bad.    ",
+                "c xbv bn    UPdate     @bad    ",
                 "c xbv bn    UPdate     bad.bc    ",
                 "c xbv bn    UPdate     ..good    ",
                 "c xbv bn    insert     ..goodinsert    ",
@@ -44,14 +51,13 @@ public class MatchApp {
                 "c xbv bn    update     good");
         matchAllReport(tests, regexps).entrySet().stream().forEach(x -> System.out.println(x.getKey() + "  = " + x.getValue()));
 
-
-        List<File> files = FileUtil.getAllFilesInPath("C:\\Java\\SQL\\ORION\\orion\\Procedures");
-
-        for(File each:files){
-            List<String> strings = Files.readAllLines(each.toPath(), StandardCharsets.ISO_8859_1);
-            System.out.println(Settings.LINE_SEP + each.getName());
-            matchAllReport(strings, regexps).entrySet().stream().forEach(x  -> System.out.println(x.getKey() + "  = "+ x.getValue()));
-        }
+//        List<File> files = FileUtil.getAllFilesInPath("C:\\Java\\SQL\\ORION\\orion2\\Procedures");
+//
+//        for(File each:files){
+//            List<String> strings = Files.readAllLines(each.toPath(), StandardCharsets.ISO_8859_1);
+//            System.out.println(Settings.LINE_SEP + each.getName());
+//            matchAllReport(strings, regexps).entrySet().stream().forEach(x  -> System.out.println(x.getKey() + "  = "+ x.getValue()));
+//        }
 
     }
 
@@ -101,7 +107,7 @@ public class MatchApp {
             for (int i = 0; i < strings.size(); i++) {
                 Matcher matcher = Pattern.compile(eachRegexp).matcher(strings.get(i));
                 if (matcher.find()) {
-                    results.put(i, strings.get(i));
+                    results.put(i + 1, strings.get(i));
                    continue;
                 }
             }
