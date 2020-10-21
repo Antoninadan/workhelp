@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileUtil {
 
@@ -36,4 +37,12 @@ public class FileUtil {
         }
         return false;
     }
+
+    public static List<File> getAllFilesInPath(String pathName) throws IOException{
+        return Files.walk(Paths.get(pathName))
+                .filter(Files::isRegularFile)
+                .map(Path::toFile)
+                .collect(Collectors.toList());
+    }
+
 }
