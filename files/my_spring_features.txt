@@ -1,0 +1,51 @@
+@Validated
+	annotation to the controller at CLASS LEVEL to tell Spring to evaluate the constraint annotations on METHOD parameters.
+	https://habr.com/ru/post/68318/
+
+@ApiResponses
+	обычно используется для указания кодов ошибок и исключительных случаев
+	https://www.programcreek.com/java-api-examples/?api=io.swagger.annotations.ApiResponse
+
+(?) @HeaderOperation
+	аннотація fuib-реалізації 
+	https://gitlab.fuib.com/bus/hulk/-/blob/master/src/main/java/com/fuib/accounts/aop/request/HeaderOperation.java
+	
+@Valid
+	automatically bootstraps the default JSR 380 implementation — Hibernate Validator — and validates the argument.
+	використовується для аргументів методів
+
+@Api
+	Marks a class as a Swagger resource.
+	
+@ControllerAdvise
+	is used to add a global exception handling logic for the whole application. Thus, more than one controller in your application.
+	
+_______________________________________________________________________________________________________________________	
+LOMBOK:
+	https://habr.com/ru/post/438870/
+	
+@NoArgsConstructor 
+	создаёт конструктор по умолчанию
+	если в классе есть final поля, такой конструктор сгенерирован не будет, но если параметр force = true, то конструктор будет сгенерирован, а final поля будут инициализированы пустыми значениями
+	(staticName = "create") - создать статическую обёртку вокруг конструктора с заданным именем, пример: TestClass.create(...);
+	
+@RequiredArgsConstructor
+	генерирует конструктор, принимающий значения для каждого final поля или поля с аннотацией @NonNull
+	для @NonNull полей конструктор так же будет проверять, чтобы в него не передали значение null
+	
+@AllArgsConstructor
+	генерирует конструктор для всех полей класса 
+	проверка на null  для @NonNull  полей тоже производится
+
+@Data
+	@ToString
+	@EqualsAndHashCode
+	@Getter on all fields
+	@Setter on all non-final fields
+	@RequiredArgsConstructor
+	
+@Builder
+	Статический метод возвращает экземпляр билдера для задания всех свойств объекта. После этого вызов build() возвращает инстанс
+_______________________________________________________________________________________________________________________
+	
+	

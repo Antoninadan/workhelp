@@ -1,0 +1,131 @@
+____________________________________________________________________________________________________
+Enterprise JavaBeans (EJB)
+технологии программирования, включая аспектно-ориентированное программирование (AOP) и внедрение зависимостей
+(DI), дают JavaBeans дополнительные возможности, ранее заложенные в EJB. Эти технологии оснащают обычные Java-объекты (PlainOld Java Objects, POJO) моделью декларативного программирования, напоминающей EJB, но без всей сложности спецификации EJB.
+Больше не надо создавать громоздкий компонент EJB, когда достаточно простого компонента JavaBean. 
+____________________________________________________________________________________________________
+* легковесность и ненасильственность благодаря применению простых Java-объектов (POJO);
+* слабое связывание посредством внедрения зависимостей и ориентированности на интерфейсы;
+* декларативное программирование через аспекты и общепринятые соглашения;
+* уменьшение объема типового кода через аспекты и шаблоны.
+____________________________________________________________________________________________________
+
+
+LAUNCH
+Example:
+	git clone https://github.com/spring-projects/spring-petclinic.git
+	cd spring-petclinic
+	./mvnw package
+	java -jar target/spring-petclinic-2.3.0.BUILD-SNAPSHOT.jar
+
+_______________________________________________________________________________________________________
+GIT:
+1. https://github.com/springframeworkguru/spring5webapp - fork
+2. for compare: Git -> Compare with branch
+
+
+1. go to original repo (link in github under the name)
+2. copy the git-link
+3. goto terminal idea in my project:
+	git remote add guruRepo https://github.com/springframeworkguru/spring5webapp.git
+	git fetch guruRepo
+4. for compare: Git -> Compare with branch 
+	now in comparison added guruRepo branches
+	
+_______________________________________________________________________________________________________
+DOMAIN:
+0. package name = "domain" or "model"
+1. * <----> * - realization like: 
+	1.1 each model has Set<Entity>
+	1.2 ...
+	
+2. Build another equals() and hashCode() !:
+	Alt+Enter on Entity -> equals() and hashCode() -> select Template = IntelliJ Default -> select only "id" -> not select id as non-null
+
+_______________________________________________________________________________________________________
+REPOSITORY:
+0. package name = "repositories"
+1. public interface BookRepository extends CrudRepository<Book, Long>
+
+_______________________________________________________________________________________________________
+BOOTSTRAP:
+
+_______________________________________________________________________________________________________
+DispatcherServlet
+1. https://habr.com/ru/post/336816/
+	* После получения HTTP-запроса DispatcherServlet обращается к интерфейсу HandlerMapping, который определяет, какой Контроллер должен быть вызван, после чего, отправляет запрос в нужный Контроллер.
+	* Контроллер принимает запрос и вызывает соответствующий служебный метод, основанный на GET или POST. Вызванный метод определяет данные Модели, основанные на определённой бизнес-логике и возвращает в DispatcherServlet имя Вида (View).
+	* При помощи интерфейса ViewResolver DispatcherServlet определяет, какой Вид нужно использовать на основании полученного имени.
+	*После того, как Вид (View) создан, DispatcherServlet отправляет данные Модели в виде атрибутов в Вид, который в конечном итоге отображается в браузере.
+2. WebApplicationContext extends ApplicationContext:  
+	2.1 HandlerMapping
+	2.2 Controller
+	2.3 ViewResolver
+ 
+
+
+_______________________________________________________________________________________________________
+H2:
+1. To enable h2-console in application.properties set:
+	spring.h2.console.enabled=true
+2. To open:
+	check port Tomcat in Run:    Tomcat started on port(s): 8080 (http) with context path ''
+	check db name in Run (i dont have, only in video):    jdbc:h2:mem:testdb
+	run: http://localhost:<tomcat port>/h2-console
+
+
+_______________________________________________________________________________________________________
+Thymeleaf engine
+	
+
+_______________________________________________________________________________________________________
+Create new project in Github	
+	 initialize with Readme
+	 gitinore - java
+	 
+_______________________________________________________________________________________________________
+Start application
+1. @SpringBootApplication
+2. В main: SpringApplication.run(SfgDiApplication.class, args);
+
+_______________________________________________________________________________________________________
+Spring Context
+0. Коли ми завертаємось до чогось, то шукається в контексті
+1. create bean instance without constructor:
+	ApplicationContext context = SpringApplication.run(SfgDiApplication.class, args);
+	MyController myController = (MyController) context.getBean("myController");
+_______________________________________________________________________________________________________	
+Dependency injection - внедрение зависимостей:
+	constructor injection - через конструктор - the best!
+	setter injection - через сеттер
+	properties - особливо private - дуже погано
+	замість використання конкретних класів - викрирстовуємо interface
+____________________________________________________________________________________________________	 
+Inversion of Control (IoC) Инверсия управления
+1. Технологія дозволяє залежностям бути injected в runtime	
+2. Сам клас не управляє своєю injection, ні про що не просить
+Interface injection - через интерфейс внедрения:
+2. Фабричный метод
+3. Service locator
+4. IoC container
+
+_______________________________________________________________________________________________________	 
+@Qualifier - to choose the right bean
+1. Name starts with SMALL letter! like object name
+	Expl:
+		@Qualifier("propertyInjectionGreetingService")
+		@Autowired
+		public GreetingService greetingService;
+2. If need to set default - use @Primary for bean! 
+	Expl: 
+		@Primary
+		@Service
+		public class PrimaryGreetingService implements GreetingService{
+		
+_______________________________________________________________________________________________________
+Profiles
+1. Setting - application.properties
+2. See example https://github.com/Antoninadan/sfg-di  
+3. for default exmple:
+	@Profile({"EN", "default"})
+		

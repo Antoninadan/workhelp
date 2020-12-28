@@ -7,8 +7,8 @@ import java.util.List;
 // CME-22808
 public class BitApp {
     public static void main(String[] args) {
-        List<Integer> list = Arrays.asList(0, 3, 4, 8, 11, 12, 16, 19, 24, 27, 33, 34, 35, 39,
-                43, 47, 49, 50, 51, 55, 59, 63, 65569, 131072, 131088);
+        List<Integer> list = Arrays.asList(0, 1, 3, 4, 8, 11, 12, 16, 19, 24, 27, 32,  33, 34, 35, 39,
+                43, 47, 49, 50, 51, 55, 59, 63, 65568, 65569, 131072, 131088);
 
         List<Integer> ACTIVE = new ArrayList<>();
         for (Integer each : list) {
