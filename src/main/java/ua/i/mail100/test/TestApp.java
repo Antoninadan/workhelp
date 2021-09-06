@@ -1,5 +1,7 @@
 package ua.i.mail100.test;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.net.URI;
 
 public class TestApp {
@@ -9,7 +11,15 @@ public class TestApp {
 //
 //        URI uri2= URI.create("about:blanc");
 //        System.out.println("uri2 = " + uri2);
-        if("VIRTUALCARD".equals("VIRTUALCARD")) System.out.println("ok");
-       }
+        if ("VIRTUALCARD".equals("VIRTUALCARD")) System.out.println("ok");
+
+
+        Integer inte = null;
+        String string = Integer.toString(inte);
+        System.out.println("string = " + string);
+    }
+    
+    
+    
 
 }
