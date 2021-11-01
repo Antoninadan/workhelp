@@ -12,17 +12,19 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class ShedullerApp {
-    private static final String filePathUrl = "C:\\Java\\workhelp\\src\\main\\java\\ua\\i\\mail100\\sheduller";
-    private static final String fileBodyName = "body.txt";
-    private static final String fileCommissionName = "commission.txt";
+    private static final String FILE_PATH_URL = "C:\\Java\\workhelp\\src\\main\\java\\ua\\i\\mail100\\sheduller";
+    private static final String FILE_BODY_NAME = "body.txt";
+    private static final String FILE_PERCENTS_NAME = "percents.txt";
+    private static final String FILE_COMMISSION_NAME = "commission.txt";
+    private static final String FILE_PREPAID_EXPENSE_NAME = "prepaid_expense.txt";
 
 
     public static void main(String[] args) throws IOException {
-        LocalDate startDate = LocalDate.of(2021, 9, 6);
+        LocalDate startDate = LocalDate.of(2021, 9, 9);
 //        getHpText(startDate, 1);
 //        getApiText(startDate, 1);
 //        print4HpFromFile(startDate, 5);
-        print4ApiFromFile(startDate, 5);
+        print4ApiFromFile(startDate, 3);
     }
 
     public static void getHpText(LocalDate startDate, int yearNumber) {
@@ -80,59 +82,70 @@ public class ShedullerApp {
         return result + "       --" + getNameLocalDateWithWeekDay(localDate);
     }
 
-    public static String print4HpFromFile(LocalDate localDate, int yearNumber) throws IOException{
-        List<String> bodyStringList = FileUtil.read(filePathUrl, fileBodyName);
-        List<String> commissionStringList = FileUtil.read(filePathUrl, fileCommissionName);
+    public static String print4HpFromFile(LocalDate localDate, int yearNumber) throws IOException {
+        List<String> bodyStringList = FileUtil.read(FILE_PATH_URL, FILE_BODY_NAME);
+        List<String> percentsStringList = FileUtil.read(FILE_PATH_URL, FILE_PERCENTS_NAME);
+//        List<String> commissionStringList = FileUtil.read(FILE_PATH_URL, FILE_COMMISSION_NAME);
+        List<String> prepaidExpenseStringList = FileUtil.read(FILE_PATH_URL, FILE_PREPAID_EXPENSE_NAME);
         List<Double> bodyList = bodyStringList.stream().map(x -> Double.valueOf(x)).collect(Collectors.toList());
-        List<Double> commissionList = commissionStringList.stream().map(x -> Double.valueOf(x)).collect(Collectors.toList());
+        List<Double> percentsList = percentsStringList.stream().map(x -> Double.valueOf(x)).collect(Collectors.toList());
+//        List<Double> commissionList = commissionStringList.stream().map(x -> Double.valueOf(x)).collect(Collectors.toList());
+        List<Double> prepaidExpenseList = prepaidExpenseStringList.stream().map(x -> Double.valueOf(x)).collect(Collectors.toList());
         List<LocalDate> yearList = getYearList(localDate, yearNumber);
-        if (bodyList.size() != commissionList.size()) throw new RuntimeException("Bad numbers");
+        if (bodyList.size() != percentsStringList.size()) throw new RuntimeException("Bad numbers");
 
         StringBuilder result = new StringBuilder();
-               result.append("<?xml version=\"1.0\" encoding=\"utf-16\"?> \n" +
+        result.append("<?xml version=\"1.0\" encoding=\"utf-16\"?> \n" +
                 "<CalendarImport>");
-        for (int i = 0; i < yearList.size() ; i++) {
-
-        Long l = dateToLong(yearList.get(i));
+        for (int i = 0; i < yearList.size(); i++) {
+            Long l = dateToLong(yearList.get(i));
             result.append(
                     "\n" +
-                            String.format("<Events DayDate=\"%s\" Refund=\"%f\" GetCommission=\"%f\"/>", l, bodyList.get(i), commissionList.get(i)));
+                            String.format("<Events DayDate=\"%s\" Refund=\"%f\" Percent=\"%f\" FutureExpenses=\"%f\"/>",
+                                    l, bodyList.get(i), percentsList.get(i), prepaidExpenseList.get(i)));
         }
         result.append("\n</CalendarImport>");
         System.out.println(result);
         return result.toString();
     }
 
-    public static String print4ApiFromFile(LocalDate localDate, int yearNumber) throws IOException{
-        List<String> bodyStringList = FileUtil.read(filePathUrl, fileBodyName);
-        List<String> commissionStringList = FileUtil.read(filePathUrl, fileCommissionName);
+    public static String print4ApiFromFile(LocalDate localDate, int yearNumber) throws IOException {
+        List<String> bodyStringList = FileUtil.read(FILE_PATH_URL, FILE_BODY_NAME);
+        List<String> percentsStringList = FileUtil.read(FILE_PATH_URL, FILE_PERCENTS_NAME);
+//        List<String> commissionStringList = FileUtil.read(FILE_PATH_URL, FILE_COMMISSION_NAME);
+        List<String> prepaidExpenseStringList = FileUtil.read(FILE_PATH_URL, FILE_PREPAID_EXPENSE_NAME);
         List<Double> bodyList = bodyStringList.stream().map(x -> Double.valueOf(x)).collect(Collectors.toList());
-        List<Double> commissionList = commissionStringList.stream().map(x -> Double.valueOf(x)).collect(Collectors.toList());
+        List<Double> percentsList = percentsStringList.stream().map(x -> Double.valueOf(x)).collect(Collectors.toList());
+//        List<Double> commissionList = commissionStringList.stream().map(x -> Double.valueOf(x)).collect(Collectors.toList());
+        List<Double> prepaidExpenseList = prepaidExpenseStringList.stream().map(x -> Double.valueOf(x)).collect(Collectors.toList());
         List<LocalDate> yearList = getYearList(localDate, yearNumber);
-        if (bodyList.size() != commissionList.size()) throw new RuntimeException("Bad numbers");
+        if (bodyList.size() != percentsStringList.size()) throw new RuntimeException("Bad numbers");
+
 
         StringBuilder result = new StringBuilder();
         result.append("\"schedule_payments\": [");
-        for (int i = 0; i < yearList.size() -1; i++) {
+        for (int i = 0; i < yearList.size() - 1; i++) {
             String l = getNameLocalDate(yearList.get(i));
             result.append(
                     String.format(Locale.ROOT,
                             "{\n" +
                                     "            \"date\": \"%s\",\n" +
-                                    "            \"repayment_body\": %f,          \n" +
-                                    "\t\t\t\"repayment_commission\": %f\n" +
-                                    "        },", l, bodyList.get(i), commissionList.get(i)));
+                                    "            \"repayment_body\": %f,\n" +
+                                    "            \"repayment_percents\": %f,\n" +
+                                    "            \"prepaid_expense\": %f\n" +
+                                    "        },",
+                            l, bodyList.get(i), percentsList.get(i), prepaidExpenseList.get(i)));
         }
         int size = yearList.size();
-        String l = getNameLocalDate(yearList.get(size -1));
+        String l = getNameLocalDate(yearList.get(size - 1));
         result.append(String.format(Locale.ROOT,
                 "{\n" +
-                "            \"date\": \"%s\",\n" +
-                "            \"repayment_body\": %f,          \n" +
-                "\t\t\t\"repayment_commission\": %f\n" +
-                "        }]", l, bodyList.get(size -1), commissionList.get(size -1)));
-
-
+                        "            \"date\": \"%s\",\n" +
+                        "            \"repayment_body\": %f,\n" +
+                        "            \"repayment_percents\": %f,\n" +
+                        "            \"prepaid_expense\": %f\n" +
+                        "        }]",
+                l, bodyList.get(size - 1), percentsList.get(size - 1), prepaidExpenseList.get(size - 1)));
 
 
         System.out.println(result);
@@ -151,10 +164,10 @@ public class ShedullerApp {
         String result = String.format(
                 "{\n" +
                         "            \"date\": \"%s\",\n" +
-                        "            \"repayment_body\": 6250.6,          \n" +
+                        "            \"repayment_body\": 6250.6,\n" +
                         "            \"repayment_percents\": 268.4,\n" +
-                        "\t\t\t\"repayment_commission\": 70.75,\n" +
-                        "\t\t\t\"prepaid_expense\": -1980\n" +
+                        "            \"repayment_commission\": 70.75,\n" +
+                        "            \"prepaid_expense\": -1980\n" +
                         "        }", l);
         return result;
     }
@@ -163,7 +176,7 @@ public class ShedullerApp {
         List<LocalDate> result = new ArrayList<>();
         LocalDate localDate = startDate;
         beforeHoliday(startDate);
-        for (int i = 1; i <= yearNumber*12; i++) {
+        for (int i = 1; i <= yearNumber * 12; i++) {
             localDate = startDate.plusMonths(i);
             LocalDate dateCorrectHoliday = beforeHoliday(localDate);
             result.add(dateCorrectHoliday);

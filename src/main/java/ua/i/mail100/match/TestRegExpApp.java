@@ -19,18 +19,17 @@ public class TestRegExpApp {
 //        List<String> regexps = Arrays.asList("^([1-9]|1[0-2])$"); // 1-12
 //        List<String> regexps = Arrays.asList("^((?=.{6,256}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?(\\.[A-Za-z0-9]+)*(\\.([A-Za-z0-9]{2,})+)+)*$"); // email dont work
 //        List<String> regexps = Arrays.asList("^((?=.{6,256}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?(\\.[A-Za-z0-9]+)*(\\.([A-Za-z0-9]{2,})+)+)*$"); // email dont work
-        List<String> regexps = Arrays.asList("^(\\+380[0-9]{9})$"); // phone starts with +380
+//        List<String> regexps = Arrays.asList("^(\\+380[0-9]{9})$"); // phone starts with +380
 //        List<String> regexps = Arrays.asList("[^\\x00-\\xFF]"); // printable
 //        List<String> regexps = Arrays.asList("^[a-zA-Z]+$"); // definitly letters
 //        List<String> regexps = Arrays.asList("[a-zA-Z]+"); // letters should be
-
-
-
-
+//        List<String> regexps = Arrays.asList("\\w+"); // letters should be
+//        List<String> regexps = Arrays.asList("[0-9a-zA-Z-]+"); // letters should be
+        List<String> regexps = Arrays.asList("^[a-f0-9]{8}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{12}$"); // letters should be
 
         List<String> testsOk = Arrays.asList(
-              "dfgd",
-                "TTT"
+              "67574fc5-0733-44f6-a262-2901f89e9e"
+                , "EE69EF37-7CCB-41BC-AB8B-D44D15032194"
         );
 
         List<String> testsBad = Arrays.asList(
