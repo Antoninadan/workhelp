@@ -25,11 +25,12 @@ public class TestRegExpApp {
 //        List<String> regexps = Arrays.asList("[a-zA-Z]+"); // letters should be
 //        List<String> regexps = Arrays.asList("\\w+"); // letters should be
 //        List<String> regexps = Arrays.asList("[0-9a-zA-Z-]+"); // letters should be
-        List<String> regexps = Arrays.asList("^[a-f0-9]{8}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{12}$"); // letters should be
+//        List<String> regexps = Arrays.asList("^[a-f0-9]{8}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{12}$"); // letters should be
+        List<String> regexps = Arrays.asList("^[\\x00-\\x7F\\xA0-\\xFF]+$"); // letters should be
 
         List<String> testsOk = Arrays.asList(
-              "67574fc5-0733-44f6-a262-2901f89e9e"
-                , "EE69EF37-7CCB-41BC-AB8B-D44D15032194"
+              "67574fc5-0733-44f6-a26№2-2901f89e9e"
+                , "EE69EF37-7CCB-41BC-AB 8B-D44D15032194"
         );
 
         List<String> testsBad = Arrays.asList(
